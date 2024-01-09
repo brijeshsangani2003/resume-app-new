@@ -214,7 +214,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                             ),
                             common_textformfield(
                               controller: fname,
-                              validator: (value) {},
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'First name can not be empty';
+                                }
+                              },
                               onsave: (val) {
                                 setState(() {
                                   resumeDetail['fname'] = val;
@@ -249,7 +253,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                             ),
                             common_textformfield(
                               controller: lname,
-                              validator: (value) {},
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Last name can not be empty';
+                                }
+                              },
                               onsave: (val) {
                                 setState(() {
                                   resumeDetail['lname'] = val;
@@ -278,7 +286,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: des,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Designation can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['designation'] = val;
@@ -304,7 +316,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: desc,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Descrption can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['description'] = val;
@@ -331,13 +347,18 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: mno,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Mobile no can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['mobile'] = val;
                           });
                         },
                         hintText: 'Mobile No',
+                        keyboardType: TextInputType.phone,
                       )
                     ],
                   ),
@@ -357,7 +378,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: email,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Email can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['email'] = val;
@@ -383,7 +408,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: address,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Address can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['address'] = val;
@@ -409,7 +438,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: lang,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Language can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['language'] = val;
@@ -435,7 +468,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: skill,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Skill can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['skill'] = val;
@@ -461,7 +498,11 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                       ),
                       common_textformfield(
                         controller: certi,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Certification can not be empty';
+                          }
+                        },
                         onsave: (val) {
                           setState(() {
                             resumeDetail['certification'] = val;
