@@ -115,18 +115,18 @@ class _Detail_ScreenState extends State<Detail_Screen> {
   final ImagePicker picker = ImagePicker();
   var selectedimage = '';
 
-  TextEditingController fname = TextEditingController();
-  TextEditingController lname = TextEditingController();
-  TextEditingController des = TextEditingController();
-  TextEditingController desc = TextEditingController();
-  TextEditingController mno = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController address = TextEditingController();
-  TextEditingController lang = TextEditingController();
-  TextEditingController skill = TextEditingController();
-  TextEditingController certi = TextEditingController();
-  TextEditingController institute = TextEditingController();
-  TextEditingController course = TextEditingController();
+  TextEditingController? fname = TextEditingController();
+  TextEditingController? lname = TextEditingController();
+  TextEditingController? des = TextEditingController();
+  TextEditingController? desc = TextEditingController();
+  TextEditingController? mno = TextEditingController();
+  TextEditingController? email = TextEditingController();
+  TextEditingController? address = TextEditingController();
+  TextEditingController? lang = TextEditingController();
+  TextEditingController? skill = TextEditingController();
+  TextEditingController? certi = TextEditingController();
+  TextEditingController? institute = TextEditingController();
+  TextEditingController? course = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -134,19 +134,32 @@ class _Detail_ScreenState extends State<Detail_Screen> {
     debugPrint("Data is :- ${widget.data["fname"]}");
     if (widget.data != null) {
       setState(() {
-        fname.text = "${widget.data['fname']}";
-        lname.text = "${widget.data['lname']}";
-        des.text = "${widget.data['designation']}";
-        desc.text = "${widget.data['description']}";
-        mno.text = "${widget.data['mobile']}";
-        email.text = "${widget.data['email']}";
-        address.text = "${widget.data['address']}";
-        lang.text = "${widget.data['language']}";
-        skill.text = "${widget.data['skill']}";
-        certi.text = "${widget.data['certification']}";
-        institute.text = "${widget.data['edu_list'][0]['institute']}";
-        course.text = "${widget.data['edu_list'][0]['course']}";
+        fname!.text = "${widget.data['fname']}";
+        lname!.text = "${widget.data['lname']}";
+        des!.text = "${widget.data['designation']}";
+        desc!.text = "${widget.data['description']}";
+        mno!.text = "${widget.data['mobile']}";
+        email!.text = "${widget.data['email']}";
+        address!.text = "${widget.data['address']}";
+        lang!.text = "${widget.data['language']}";
+        skill!.text = "${widget.data['skill']}";
+        certi!.text = "${widget.data['certification']}";
+        institute!.text = "${widget.data['edu_list'][0]['institute']}";
+        course!.text = "${widget.data['edu_list'][0]['course']}";
       });
+    } else {
+      fname!.text = "${resumeDetail['fname']}";
+      lname!.text = "${resumeDetail['lname']}";
+      des!.text = "${resumeDetail['designation']}";
+      desc!.text = "${resumeDetail['description']}";
+      mno!.text = "${resumeDetail['mobile']}";
+      email!.text = "${resumeDetail['email']}";
+      address!.text = "${resumeDetail['address']}";
+      lang!.text = "${resumeDetail['language']}";
+      skill!.text = "${resumeDetail['skill']}";
+      certi!.text = "${resumeDetail['certification']}";
+      institute!.text = "${resumeDetail['edu_list'][0]['institute']}";
+      course!.text = "${resumeDetail['edu_list'][0]['course']}";
     }
   }
 
@@ -222,9 +235,6 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                               onsave: (val) {
                                 setState(() {
                                   resumeDetail['fname'] = val;
-                                  debugPrint("value => $val");
-                                  debugPrint(
-                                      "details => ${resumeDetail['fname']}");
                                 });
                               },
                               hintText: 'First Name',
@@ -590,42 +600,46 @@ class _Detail_ScreenState extends State<Detail_Screen> {
                   children: [
                     MaterialButton(
                       onPressed: () async {
-                        var formContext = formkey.currentState;
-                        formContext!.save();
+                        if (formkey.currentState!.validate()) {
+                          var formContext = formkey.currentState;
+                          formContext!.save();
 
-                        if (widget.data['id'] != null) {
-                          await FirebaseFirestore.instance
-                              .collection("resume")
-                              .doc(widget.data['id'])
-                              .update(jsonDecode(jsonEncode(resumeDetail)));
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const home_screen()));
-                        } else {
-                          await FirebaseStorage.instance
-                              .ref('/user-image.jpg')
-                              .putFile(File(resumeDetail["profile_image"]));
+                          if (widget.data['id'] != null) {
+                            await FirebaseFirestore.instance
+                                .collection("resume")
+                                .doc(widget.data['id'])
+                                .update(jsonDecode(jsonEncode(resumeDetail)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const home_screen()));
+                          } else {
+                            await FirebaseStorage.instance
+                                .ref('/user-image.jpg')
+                                .putFile(File(resumeDetail["profile_image"]));
 
-                          final url = await FirebaseStorage.instance
-                              .ref('/user-image.jpg')
-                              .getDownloadURL();
-                          resumeDetail['edu_list'] = eduList;
-                          FirebaseFirestore.instance
-                              .collection('resume')
-                              .add(jsonDecode(jsonEncode(resumeDetail)))
-                              .then((DocumentReference doc) {
+                            final url = await FirebaseStorage.instance
+                                .ref('/user-image.jpg')
+                                .getDownloadURL();
+                            resumeDetail['edu_list'] = eduList;
                             FirebaseFirestore.instance
                                 .collection('resume')
-                                .doc(doc.id)
-                                .update({"id": doc.id});
-                          });
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    Resume_Screen(resData: resumeDetail),
-                              ));
+                                .add(jsonDecode(jsonEncode(resumeDetail)))
+                                .then((DocumentReference doc) {
+                              FirebaseFirestore.instance
+                                  .collection('resume')
+                                  .doc(doc.id)
+                                  .update({"id": doc.id});
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      Resume_Screen(resData: resumeDetail),
+                                ));
+                          }
+                        } else {
+                          formkey.currentState!.validate();
                         }
                       },
                       color: Colors.lightBlue,
